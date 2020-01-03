@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+#keys
+/src/config.js
+
 # testing
 /coverage
 
@@ -12,6 +15,7 @@
 /build
 
 # misc
+/starter-files
 .DS_Store
 .env.local
 .env.development.local
