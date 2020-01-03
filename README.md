@@ -1,4 +1,15 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## React Photo Gallery
+
+A lightweight SPA that uses the React library to retrieve photo source URLS from Flickr's REST API and renders them into the UI.
+
+### Important Note:
+
+In order to preview this on your own localhost, you must create a file in "/src" folder named "config.js". This module contains your own Flickr API key, formatted like this:
+
+    const apiKey = 'your api key here';
+    export default apiKey;
+
+Obviously, this app, when in production, would not require users to configure their API key.
 
 ## Available Scripts
 

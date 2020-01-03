@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Photo from './Photo'
 
-export default class PhotoContainer extends Component {
-	render() {
-		return (
-			<div className="photo-container">
-				<h2>{ this.props.title }</h2>
-				<ul>
-					<Photo />
-				</ul>
-			</div>
-		)
-	}
+const PhotoContainer = (props) => {
+	return (
+		<div className="photo-container">
+			<h2>{ props.title }</h2>
+			<ul>
+				<Photo urls={props.data} />
+			</ul>
+		</div>
+	)
 }
+
+export default PhotoContainer
