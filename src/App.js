@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { 
+  Switch,
   BrowserRouter,
   Route 
 } from 'react-router-dom';
@@ -12,6 +13,7 @@ import apiKey from './config';
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav';
 import PhotoContainer from './components/PhotoContainer';
+import NotFound from './components/NotFound';
 
 export default class App extends Component {
 
@@ -27,25 +29,29 @@ export default class App extends Component {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=palm+trees&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
-        init: response.data.photos.photo.map(item => `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
+        init: response.data.photos.photo.map(item => 
+          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
       })
     })
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=ocean&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
-        ocean: response.data.photos.photo.map(item => `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
+        ocean: response.data.photos.photo.map(item => 
+          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
       })
     })
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=mountains&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
-        mountains: response.data.photos.photo.map(item => `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
+        mountains: response.data.photos.photo.map(item => 
+          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
       })
     })
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=rainbows&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
-        rainbows: response.data.photos.photo.map(item => `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
+        rainbows: response.data.photos.photo.map(item => 
+          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
       })
     })
     .catch(error => {
@@ -57,7 +63,8 @@ export default class App extends Component {
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
-        results: response.data.photos.photo.map(item => `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
+        results: response.data.photos.photo.map(item => 
+          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
       })
     })
     .catch(error => {
@@ -71,11 +78,14 @@ export default class App extends Component {
         <div className="container">
           <SearchForm onSearch={ this.performSearch } />
           <Nav />
-          <Route exact path="/" render={() => <PhotoContainer title='' data={ this.state.init } /> } />
-          <Route path="/ocean" render={() => <PhotoContainer title='Ocean' data={ this.state.ocean } /> } />
-          <Route path="/mountains" render={() => <PhotoContainer title='Mountains' data={ this.state.mountains } /> } />
-          <Route path="/rainbows" render={() => <PhotoContainer title='Rainbows' data={ this.state.rainbows } /> } />
-          <Route path="/search/:topic" render={() => <PhotoContainer data={ this.state.results } /> } />
+          <Switch>
+            <Route exact path="/" render={() => <PhotoContainer title='Photo Gallery' data={ this.state.init } /> } />
+            <Route path="/ocean" render={() => <PhotoContainer title='Ocean' data={ this.state.ocean } /> } />
+            <Route path="/mountains" render={() => <PhotoContainer title='Mountains' data={ this.state.mountains } /> } />
+            <Route path="/rainbows" render={() => <PhotoContainer title='Rainbows' data={ this.state.rainbows } /> } />
+            <Route path="/search/:topic" render={() => <PhotoContainer title='Results' data={ this.state.results } /> } />
+            <Route component={ NotFound } />
+          </Switch>
         </div>
       </BrowserRouter>
     )
