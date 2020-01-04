@@ -3,17 +3,15 @@ import axios from 'axios';
 import { 
   Switch,
   BrowserRouter,
-  Route 
+  Route
 } from 'react-router-dom';
-
 import './App.css';
-
 import apiKey from './config';
-
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav';
 import PhotoContainer from './components/PhotoContainer';
-import NotFound from './components/NotFound';
+import InvalidRoute from './components/InvalidRoute';
+import Loading from './components/Loading';
 
 export default class App extends Component {
 
@@ -22,7 +20,8 @@ export default class App extends Component {
     ocean: [],
     mountains: [],
     rainbows: [],
-    results: []
+    results: [],
+    loading: false
   }
 
   componentDidMount() {
@@ -60,11 +59,15 @@ export default class App extends Component {
   }
 
   performSearch = (query) => {
+    this.setState({
+      loading: true
+    })
     axios.get(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then(response => {
       this.setState({
         results: response.data.photos.photo.map(item => 
-          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`)
+          `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`),
+        loading: false
       })
     })
     .catch(error => {
@@ -83,8 +86,11 @@ export default class App extends Component {
             <Route path="/ocean" render={() => <PhotoContainer title='Ocean' data={ this.state.ocean } /> } />
             <Route path="/mountains" render={() => <PhotoContainer title='Mountains' data={ this.state.mountains } /> } />
             <Route path="/rainbows" render={() => <PhotoContainer title='Rainbows' data={ this.state.rainbows } /> } />
-            <Route path="/search/:topic" render={() => <PhotoContainer title='Results' data={ this.state.results } /> } />
-            <Route component={ NotFound } />
+            {this.state.loading === true ?
+              <Route path="/search/:topic" render={() => <Loading /> } /> :
+              <Route path="/search/:topic" render={() => <PhotoContainer title='Results' data={ this.state.results } /> } />
+            }
+            <Route component={ InvalidRoute } />
           </Switch>
         </div>
       </BrowserRouter>
