@@ -9,6 +9,8 @@ In order to preview this on your own localhost, you must create a file in "/src"
     const apiKey = 'your api key here';
     export default apiKey;
 
+After your API key is setup, run `npm install` in the root directory to install dependencies, and `npm start` to run the dev server!
+
 Obviously, this app, when in production, would not require users to configure their API key.
 
 ## Available Scripts
