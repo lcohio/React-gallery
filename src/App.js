@@ -7,6 +7,8 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import apiKey from './config';
+
+import PropTypes from 'prop-types';
 import SearchForm from './components/SearchForm';
 import Nav from './components/Nav';
 import PhotoContainer from './components/PhotoContainer';
@@ -96,4 +98,8 @@ export default class App extends Component {
       </BrowserRouter>
     )
   }
+}
+
+App.propTypes = {
+  performSearch: PropTypes.func
 }
